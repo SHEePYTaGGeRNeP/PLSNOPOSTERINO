@@ -16,7 +16,7 @@ namespace PLS_NO_POSTERINO.Classes
 
         public override string ToString()
         {
-            return Name + " - " + Kind;
+            return Name + "  {" + Kind + "}";
         }
     }
 
