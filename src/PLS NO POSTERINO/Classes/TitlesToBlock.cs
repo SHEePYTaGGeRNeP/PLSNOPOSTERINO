@@ -5,8 +5,8 @@ namespace PLS_NO_POSTERINO.Classes
 {
     public class TitlesToBlock
     {
-        public string Name { get; }
-        public TitleCheckKind Kind { get; }
+        public string Name { get; private set; }
+        public TitleCheckKind Kind { get; private set; }
         public NativeWin32.ProcessWindow Window { get; set; }
         public TitlesToBlock(string pName, TitleCheckKind pKind)
         {

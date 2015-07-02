@@ -20,8 +20,8 @@ namespace PLS_NO_POSTERINO.Classes
 
         private Thread _bleepThread;
 
-        public System.Windows.Forms.Timer ListeningTimer { get; }
-        public System.Windows.Forms.Timer AfkCheckTimer { get; }
+        public System.Windows.Forms.Timer ListeningTimer { get; private set; }
+        public System.Windows.Forms.Timer AfkCheckTimer { get; private set; }
 
         public int AutoModeAfkInMs { get; set; }
 
