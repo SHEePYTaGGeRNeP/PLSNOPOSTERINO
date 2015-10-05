@@ -33,6 +33,10 @@
             this.tbxPasswordReal = new System.Windows.Forms.MaskedTextBox();
             this.tbxPassword = new System.Windows.Forms.MaskedTextBox();
             this.gbxSetup = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numAFKRate = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numRefreshRate = new System.Windows.Forms.NumericUpDown();
             this.lbTriggeredTitles = new System.Windows.Forms.ListBox();
             this.btnPasswordReal = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -45,15 +49,14 @@
             this.tbxTitle = new System.Windows.Forms.TextBox();
             this.btnPasswordOk = new System.Windows.Forms.Button();
             this.btnSetFormWindow = new System.Windows.Forms.Button();
-            this.numRefreshRate = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.numAFKRate = new System.Windows.Forms.NumericUpDown();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.numWaitForPassword = new System.Windows.Forms.NumericUpDown();
             this.gbxSetup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numAutoModeSeconds)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRefreshRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAFKRate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRefreshRate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numAutoModeSeconds)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numWaitForPassword)).BeginInit();
             this.SuspendLayout();
             // 
             // tbxPasswordReal
@@ -74,6 +77,8 @@
             // 
             // gbxSetup
             // 
+            this.gbxSetup.Controls.Add(this.label4);
+            this.gbxSetup.Controls.Add(this.numWaitForPassword);
             this.gbxSetup.Controls.Add(this.label3);
             this.gbxSetup.Controls.Add(this.numAFKRate);
             this.gbxSetup.Controls.Add(this.label2);
@@ -96,6 +101,60 @@
             this.gbxSetup.TabIndex = 3;
             this.gbxSetup.TabStop = false;
             this.gbxSetup.Text = "Setup";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(207, 237);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(132, 13);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Check user away rate (ms)";
+            // 
+            // numAFKRate
+            // 
+            this.numAFKRate.Location = new System.Drawing.Point(370, 235);
+            this.numAFKRate.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numAFKRate.Name = "numAFKRate";
+            this.numAFKRate.Size = new System.Drawing.Size(58, 20);
+            this.numAFKRate.TabIndex = 17;
+            this.numAFKRate.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numAFKRate.ValueChanged += new System.EventHandler(this.numAFKRate_ValueChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(10, 269);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(87, 13);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "Refresh rate (ms)";
+            // 
+            // numRefreshRate
+            // 
+            this.numRefreshRate.Location = new System.Drawing.Point(110, 267);
+            this.numRefreshRate.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numRefreshRate.Name = "numRefreshRate";
+            this.numRefreshRate.Size = new System.Drawing.Size(82, 20);
+            this.numRefreshRate.TabIndex = 15;
+            this.numRefreshRate.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numRefreshRate.ValueChanged += new System.EventHandler(this.numRefreshRate_ValueChanged);
             // 
             // lbTriggeredTitles
             // 
@@ -222,60 +281,6 @@
             this.btnSetFormWindow.UseVisualStyleBackColor = true;
             this.btnSetFormWindow.Click += new System.EventHandler(this.btnSetFormWindow_Click);
             // 
-            // numRefreshRate
-            // 
-            this.numRefreshRate.Location = new System.Drawing.Point(107, 267);
-            this.numRefreshRate.Maximum = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            this.numRefreshRate.Name = "numRefreshRate";
-            this.numRefreshRate.Size = new System.Drawing.Size(58, 20);
-            this.numRefreshRate.TabIndex = 15;
-            this.numRefreshRate.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.numRefreshRate.ValueChanged += new System.EventHandler(this.numRefreshRate_ValueChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 269);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 13);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "Refresh rate (ms)";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(207, 237);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(132, 13);
-            this.label3.TabIndex = 18;
-            this.label3.Text = "Check user away rate (ms)";
-            // 
-            // numAFKRate
-            // 
-            this.numAFKRate.Location = new System.Drawing.Point(370, 235);
-            this.numAFKRate.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numAFKRate.Name = "numAFKRate";
-            this.numAFKRate.Size = new System.Drawing.Size(58, 20);
-            this.numAFKRate.TabIndex = 17;
-            this.numAFKRate.Value = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numAFKRate.ValueChanged += new System.EventHandler(this.numAFKRate_ValueChanged);
-            // 
             // notifyIcon1
             // 
             this.notifyIcon1.BalloonTipText = "Double Click to open";
@@ -283,6 +288,33 @@
             this.notifyIcon1.Text = "PLS NO POSTERINO";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 219);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(92, 13);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Wait for password";
+            // 
+            // numWaitForPassword
+            // 
+            this.numWaitForPassword.Location = new System.Drawing.Point(110, 217);
+            this.numWaitForPassword.Maximum = new decimal(new int[] {
+            500000000,
+            0,
+            0,
+            0});
+            this.numWaitForPassword.Name = "numWaitForPassword";
+            this.numWaitForPassword.Size = new System.Drawing.Size(82, 20);
+            this.numWaitForPassword.TabIndex = 19;
+            this.numWaitForPassword.Value = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.numWaitForPassword.ValueChanged += new System.EventHandler(this.numWaitForPassword_ValueChanged);
             // 
             // MainWindowForm
             // 
@@ -300,9 +332,10 @@
             this.Resize += new System.EventHandler(this.MainWindowForm_Resize);
             this.gbxSetup.ResumeLayout(false);
             this.gbxSetup.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numAutoModeSeconds)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRefreshRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAFKRate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRefreshRate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numAutoModeSeconds)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numWaitForPassword)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -330,6 +363,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numAFKRate;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown numWaitForPassword;
     }
 }
 

@@ -14,7 +14,7 @@ namespace PLS_NO_POSTERINO.Classes
     {
         private ProgressBar trackWave = new ProgressBar() { Maximum = int.MaxValue };
 
-        private const int _WAIT_FOR_PASSWORD = 5000;
+        public int WaitForPassword { get; set; } = 5000;
 
         public static ProcessWindowHandler Instance;
 
@@ -114,7 +114,7 @@ namespace PLS_NO_POSTERINO.Classes
 
         private void WaitForAlarm()
         {
-            Thread.Sleep(_WAIT_FOR_PASSWORD);
+            Thread.Sleep(this.WaitForPassword);
             if (!this.IsActive) return;
             if (this._bleepThread == null || !this._bleepThread.IsAlive)
                 this.StartBleepThread();

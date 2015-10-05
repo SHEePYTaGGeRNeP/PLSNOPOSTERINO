@@ -133,6 +133,7 @@ namespace PLS_NO_POSTERINO
                 this.gbxSetup.Enabled = true;
             }
             this.tbxPassword.Clear();
+            this.chbxAutoMode.Checked = false;
         }
         /// <summary>
         /// Refresh rate to set current process
@@ -167,5 +168,9 @@ namespace PLS_NO_POSTERINO
             // Password is used to enabled groupbox
         }
 
+        private void numWaitForPassword_ValueChanged(object sender, EventArgs e)
+        {
+            this._processWindowHandler.WaitForPassword = (int)this.numWaitForPassword.Value;
+        }
     }
 }
