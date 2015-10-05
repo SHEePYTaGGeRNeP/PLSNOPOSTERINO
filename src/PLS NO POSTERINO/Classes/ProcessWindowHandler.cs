@@ -6,11 +6,17 @@ using System.Windows.Forms;
 
 namespace PLS_NO_POSTERINO.Classes
 {
+    using System.Runtime.CompilerServices;
+
+    using PLS_NO_POSTERINO.Properties;
+
     public class ProcessWindowHandler
     {
+        private ProgressBar trackWave = new ProgressBar() { Maximum = int.MaxValue };
+
         private const int _WAIT_FOR_PASSWORD = 5000;
 
-        public static readonly ProcessWindowHandler Instance = new ProcessWindowHandler();
+        public static ProcessWindowHandler Instance;
 
         private readonly System.Media.SoundPlayer _soundPlayer = new System.Media.SoundPlayer(Properties.Resources.Loud_alarm_clock_sound);
 
@@ -21,16 +27,26 @@ namespace PLS_NO_POSTERINO.Classes
         public string Password { get; set; }
         public bool IsActive { get; private set; }
         public NativeWin32.ProcessWindow FormWindow { get; set; }
-
+        private MainWindowForm _form;
         private Thread _bleepThread;
 
         public System.Windows.Forms.Timer ListeningTimer { get; private set; }
         public System.Windows.Forms.Timer AfkCheckTimer { get; private set; }
 
         public int AutoModeAfkInMs { get; set; }
+        [DllImport("winmm.dll")]
+        public static extern int waveOutGetVolume(IntPtr hwo, out uint dwVolume);
+        [DllImport("winmm.dll")]
+        public static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume);
 
-        public ProcessWindowHandler()
+        [DllImport("user32.dll")]
+        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
+
+
+        public ProcessWindowHandler(MainWindowForm form)
         {
+            Instance = this;
+            this._form = form;
             this.ListTitlesToBlocks = new List<TitlesToBlock>();
             this.ListeningTimer = new System.Windows.Forms.Timer();
             this.AfkCheckTimer = new System.Windows.Forms.Timer();
@@ -76,10 +92,25 @@ namespace PLS_NO_POSTERINO.Classes
             if (H.TitlesToBlockContainsTitle(this.ListTitlesToBlocks, lvCurrentProcessWindow.Title))
             {
                 NativeWin32.SetForegroundWindow(this.FormWindow.hWnd.ToInt32());
+                this._form.Show();
+                this._form.WindowState = FormWindowState.Normal;
+                this._form.ShowInTaskbar = true;
+                keybd_event((byte)Keys.VolumeUp, 0, 0, 0); // increase volume
+                if (this._bleepThread != null && this._bleepThread.IsAlive) return;
                 Thread startBleepAndAlarm = new Thread(this.WaitForAlarm);
                 startBleepAndAlarm.Start();
             }
         }
+
+        private void SetVolumeMax()
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                Thread.Sleep(50);
+                keybd_event((byte)Keys.VolumeUp, 0, 0, 0); // increase volume
+            }
+        }
+
 
         private void WaitForAlarm()
         {
@@ -87,7 +118,6 @@ namespace PLS_NO_POSTERINO.Classes
             if (!this.IsActive) return;
             if (this._bleepThread == null || !this._bleepThread.IsAlive)
                 this.StartBleepThread();
-            this._soundPlayer.PlayLooping();
         }
 
         /// <summary>
@@ -145,8 +175,10 @@ namespace PLS_NO_POSTERINO.Classes
         {
             if (this._bleepThread != null && this._bleepThread.IsAlive)
                 this._bleepThread.Abort();
+            this.SetVolumeMax();
             this._bleepThread = new Thread(this.ThreadedStartBleeping);
             this._bleepThread.Start();
+            this._soundPlayer.PlayLooping();
         }
         private void ThreadedStartBleeping()
         {

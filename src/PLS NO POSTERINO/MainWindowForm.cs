@@ -14,6 +14,7 @@ namespace PLS_NO_POSTERINO
 
         public MainWindowForm()
         {
+            new ProcessWindowHandler(this);
             this.InitializeComponent();
             this._processWindowHandler = ProcessWindowHandler.Instance;
             this._processWindowHandler.OnAutoModeStarted += delegate { SetActive(); };
