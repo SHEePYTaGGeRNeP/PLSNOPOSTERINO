@@ -10,13 +10,13 @@ namespace PLS_NO_POSTERINO.Classes
         public NativeWin32.ProcessWindow Window { get; set; }
         public TitlesToBlock(string pName, TitleCheckKind pKind)
         {
-            Name = pName;
-            Kind = pKind;
+            this.Name = pName;
+            this.Kind = pKind;
         }
 
         public override string ToString()
         {
-            return Name + "  {" + Kind + "}";
+            return this.Name + "  {" + this.Kind + "}";
         }
     }
 

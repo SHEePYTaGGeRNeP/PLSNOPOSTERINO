@@ -8,7 +8,11 @@ namespace PLS_NO_POSTERINO.Classes
 {
     public class ProcessWindowHandler
     {
+        private const int _WAIT_FOR_PASSWORD = 5000;
+
         public static readonly ProcessWindowHandler Instance = new ProcessWindowHandler();
+
+        private readonly System.Media.SoundPlayer _soundPlayer = new System.Media.SoundPlayer(Properties.Resources.Loud_alarm_clock_sound);
 
         public delegate void AutoModeStartedHandler();
         public event AutoModeStartedHandler OnAutoModeStarted;
@@ -27,19 +31,19 @@ namespace PLS_NO_POSTERINO.Classes
 
         public ProcessWindowHandler()
         {
-            ListTitlesToBlocks = new List<TitlesToBlock>();
-            ListeningTimer = new System.Windows.Forms.Timer();
-            AfkCheckTimer = new System.Windows.Forms.Timer();
+            this.ListTitlesToBlocks = new List<TitlesToBlock>();
+            this.ListeningTimer = new System.Windows.Forms.Timer();
+            this.AfkCheckTimer = new System.Windows.Forms.Timer();
             this.Setup();
         }
 
         private void Setup()
         {
-            ListeningTimer.Interval = 100;
-            ListeningTimer.Tick += ListeningTimerOnTick;
-            AfkCheckTimer.Interval = 1000;
-            AfkCheckTimer.Tick += AfkCheckTimerOnTick;
-            AutoModeAfkInMs = 5000;
+            this.ListeningTimer.Interval = 100;
+            this.ListeningTimer.Tick += this.ListeningTimerOnTick;
+            this.AfkCheckTimer.Interval = 1000;
+            this.AfkCheckTimer.Tick += this.AfkCheckTimerOnTick;
+            this.AutoModeAfkInMs = 5000;
         }
 
         private void AfkCheckTimerOnTick(object pSender, EventArgs pEventArgs)
@@ -56,12 +60,12 @@ namespace PLS_NO_POSTERINO.Classes
                 int lvLastInputTick = lvLastInputInfo.dwTime;
                 lvIdleTime = lvEnvTicks - lvLastInputTick;
             }
-            if (lvIdleTime > AutoModeAfkInMs)
+            if (lvIdleTime > this.AutoModeAfkInMs)
             {
-                SetActive(true);
-                if (OnAutoModeStarted != null)
-                    OnAutoModeStarted.Invoke();
-                AfkCheckTimer.Stop();
+                this.SetActive(true);
+                if (this.OnAutoModeStarted != null)
+                    this.OnAutoModeStarted.Invoke();
+                this.AfkCheckTimer.Stop();
             }
             Console.WriteLine("Inactive for : " + lvIdleTime);
         }
@@ -69,12 +73,21 @@ namespace PLS_NO_POSTERINO.Classes
         private void ListeningTimerOnTick(object pSender, EventArgs pEventArgs)
         {
             NativeWin32.ProcessWindow lvCurrentProcessWindow = NativeWin32.GetActiveProcessWindow();
-            if (H.TitlesToBlockContainsTitle(ListTitlesToBlocks, lvCurrentProcessWindow.Title))
+            if (H.TitlesToBlockContainsTitle(this.ListTitlesToBlocks, lvCurrentProcessWindow.Title))
             {
-                NativeWin32.SetForegroundWindow(FormWindow.hWnd.ToInt32());
-                if (_bleepThread == null || !_bleepThread.IsAlive)
-                    this.StartBleepThread();
+                NativeWin32.SetForegroundWindow(this.FormWindow.hWnd.ToInt32());
+                Thread startBleepAndAlarm = new Thread(this.WaitForAlarm);
+                startBleepAndAlarm.Start();
             }
+        }
+
+        private void WaitForAlarm()
+        {
+            Thread.Sleep(_WAIT_FOR_PASSWORD);
+            if (!this.IsActive) return;
+            if (this._bleepThread == null || !this._bleepThread.IsAlive)
+                this.StartBleepThread();
+            this._soundPlayer.PlayLooping();
         }
 
         /// <summary>
@@ -84,26 +97,31 @@ namespace PLS_NO_POSTERINO.Classes
         /// <returns></returns>
         public bool SetActive(bool pIsActive)
         {
-            if (String.IsNullOrEmpty(Password))
+            if (String.IsNullOrEmpty(this.Password))
                 return false;
-            IsActive = pIsActive;
-            ListeningTimer.Stop();
-            if (IsActive)
+            this.IsActive = pIsActive;
+            this.ListeningTimer.Stop();
+            if (this.IsActive)
             {
-                ListeningTimer.Start();
+                this.ListeningTimer.Start();
             }
             else
+            {
                 if (this._bleepThread != null && this._bleepThread.IsAlive)
                     this._bleepThread.Abort();
+                this._soundPlayer.Stop();
+            }
             return true;
         }
+        
+
 
         public void SetAutoModusActive(bool pIsActive)
         {
             if (pIsActive == false)
-                AfkCheckTimer.Stop();
+                this.AfkCheckTimer.Stop();
             else
-                AfkCheckTimer.Start();
+                this.AfkCheckTimer.Start();
         }
 
         /// <summary>
@@ -113,11 +131,11 @@ namespace PLS_NO_POSTERINO.Classes
         /// <returns>Returns IsActive</returns>
         public bool CheckPassword(string pPassword)
         {
-            if (Password == pPassword)
+            if (this.Password == pPassword)
                 this.SetActive(false);
             else
                 this.StartBleepThread();
-            return IsActive;
+            return this.IsActive;
         }
 
 
@@ -125,14 +143,14 @@ namespace PLS_NO_POSTERINO.Classes
 
         public void StartBleepThread()
         {
-            if (_bleepThread != null && _bleepThread.IsAlive)
-                _bleepThread.Abort();
-            _bleepThread = new Thread(ThreadedStartBleeping);
-            _bleepThread.Start();
+            if (this._bleepThread != null && this._bleepThread.IsAlive)
+                this._bleepThread.Abort();
+            this._bleepThread = new Thread(this.ThreadedStartBleeping);
+            this._bleepThread.Start();
         }
         private void ThreadedStartBleeping()
         {
-            while (IsActive)
+            while (this.IsActive)
             {
                 try
                 {

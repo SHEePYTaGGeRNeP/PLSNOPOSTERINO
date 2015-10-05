@@ -14,17 +14,17 @@ namespace PLS_NO_POSTERINO
 
         public MainWindowForm()
         {
-            InitializeComponent();
-            _processWindowHandler = ProcessWindowHandler.Instance;
-            _processWindowHandler.OnAutoModeStarted += delegate { SetActive(); };
+            this.InitializeComponent();
+            this._processWindowHandler = ProcessWindowHandler.Instance;
+            this._processWindowHandler.OnAutoModeStarted += delegate { SetActive(); };
             this.LoadUserInterface();
         }
 
         private void LoadUserInterface()
         {
-            cbxTitleKind.Items.Clear();
-            cbxTitleKind.Items.AddRange(H.ConvertAllTitleKindToString());
-            cbxTitleKind.SelectedIndex = 1;
+            this.cbxTitleKind.Items.Clear();
+            this.cbxTitleKind.Items.AddRange(H.ConvertAllTitleKindToString());
+            this.cbxTitleKind.SelectedIndex = 1;
             this.WindowState = FormWindowState.Maximized;
         }
 
@@ -33,20 +33,20 @@ namespace PLS_NO_POSTERINO
         {
             if (this.WindowState == FormWindowState.Minimized)
             {
-                notifyIcon1.Visible = true;
-                notifyIcon1.ShowBalloonTip(500);
+                this.notifyIcon1.Visible = true;
+                this.notifyIcon1.ShowBalloonTip(500);
                 this.Hide();
             }
             else
-                notifyIcon1.Visible = false;
+                this.notifyIcon1.Visible = false;
         }
 
         private void MainWindow_FormClosing(object pSender, FormClosingEventArgs pE)
         {
-            if (_processWindowHandler.IsActive)
+            if (this._processWindowHandler.IsActive)
             {
                 pE.Cancel = true;
-                _processWindowHandler.StartBleepThread();
+                this._processWindowHandler.StartBleepThread();
             }
         }
 
@@ -59,34 +59,34 @@ namespace PLS_NO_POSTERINO
             this.Show();
             this.WindowState = FormWindowState.Normal;
             this.ShowInTaskbar = true;
-            notifyIcon1.Visible = false;
+            this.notifyIcon1.Visible = false;
         }
 
         private void btnSetFormWindow_Click(object sender, System.EventArgs e)
         {
-            _processWindowHandler.FormWindow = NativeWin32.GetActiveProcessWindow();
-            gbxSetup.Enabled = true;
-            btnSetFormWindow.Enabled = false;
-            btnSetFormWindow.Visible = false;
+            this._processWindowHandler.FormWindow = NativeWin32.GetActiveProcessWindow();
+            this.gbxSetup.Enabled = true;
+            this.btnSetFormWindow.Enabled = false;
+            this.btnSetFormWindow.Visible = false;
         }
 
         private void btnPasswordReal_Click(object sender, System.EventArgs e)
         {
-            if (String.IsNullOrEmpty(tbxPasswordReal.Text))
+            if (String.IsNullOrEmpty(this.tbxPasswordReal.Text))
                 MessageBox.Show("Password cannot be empty", "Empty password", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             else
-                _processWindowHandler.Password = tbxPasswordReal.Text;
+                this._processWindowHandler.Password = this.tbxPasswordReal.Text;
         }
 
         private void btnAddTitle_Click(object sender, System.EventArgs e)
         {
-            if (String.IsNullOrEmpty(tbxTitle.Text))
+            if (String.IsNullOrEmpty(this.tbxTitle.Text))
                 return;
-            TitlesToBlock lvTtb = new TitlesToBlock(tbxTitle.Text, H.ConvertKindStringToKind(cbxTitleKind.SelectedItem.ToString()));
-            _processWindowHandler.ListTitlesToBlocks.Add(lvTtb);
-            lbTriggeredTitles.Items.Add(lvTtb.ToString());
-            tbxTitle.Clear();
+            TitlesToBlock lvTtb = new TitlesToBlock(this.tbxTitle.Text, H.ConvertKindStringToKind(this.cbxTitleKind.SelectedItem.ToString()));
+            this._processWindowHandler.ListTitlesToBlocks.Add(lvTtb);
+            this.lbTriggeredTitles.Items.Add(lvTtb.ToString());
+            this.tbxTitle.Clear();
         }
 
         private void btnAddCurrentProcess_Click(object sender, System.EventArgs e)
@@ -106,32 +106,32 @@ namespace PLS_NO_POSTERINO
 
         private void chbxActive_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (chbxActive.Checked)
-                if (!SetActive())
-                    chbxActive.Checked = false;
+            if (this.chbxActive.Checked)
+                if (!this.SetActive())
+                    this.chbxActive.Checked = false;
         }
 
         private void chbxAutoMode_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (String.IsNullOrEmpty(_processWindowHandler.Password))
+            if (String.IsNullOrEmpty(this._processWindowHandler.Password))
             {
                 MessageBox.Show("Password cannot be empty", "Empty password", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
-                chbxAutoMode.Checked = false;
+                this.chbxAutoMode.Checked = false;
             }
             else
-                _processWindowHandler.SetAutoModusActive(chbxAutoMode.Checked);
+                this._processWindowHandler.SetAutoModusActive(this.chbxAutoMode.Checked);
         }
 
         private void btnPasswordOk_Click(object sender, System.EventArgs e)
         {
             // returns IsActive
-            if (!_processWindowHandler.CheckPassword(tbxPassword.Text))
+            if (!this._processWindowHandler.CheckPassword(this.tbxPassword.Text))
             {
-                chbxActive.Checked = false;
-                gbxSetup.Enabled = true;
+                this.chbxActive.Checked = false;
+                this.gbxSetup.Enabled = true;
             }
-            tbxPassword.Clear();
+            this.tbxPassword.Clear();
         }
         /// <summary>
         /// Refresh rate to set current process
@@ -140,24 +140,24 @@ namespace PLS_NO_POSTERINO
         /// <param name="e"></param>
         private void numRefreshRate_ValueChanged(object sender, EventArgs e)
         {
-            _processWindowHandler.ListeningTimer.Interval = (int)numRefreshRate.Value;
+            this._processWindowHandler.ListeningTimer.Interval = (int)this.numRefreshRate.Value;
         }
         private void numAutoModeSeconds_ValueChanged(object sender, EventArgs e)
         {
-            _processWindowHandler.AutoModeAfkInMs = (int)numAutoModeSeconds.Value;
+            this._processWindowHandler.AutoModeAfkInMs = (int)this.numAutoModeSeconds.Value;
         }
         private void numAFKRate_ValueChanged(object sender, EventArgs e)
         {
-            _processWindowHandler.AfkCheckTimer.Interval = (int)numAFKRate.Value * 1000;
+            this._processWindowHandler.AfkCheckTimer.Interval = (int)this.numAFKRate.Value * 1000;
         }
 
         #endregion
 
         private bool SetActive()
         {
-            if (_processWindowHandler.SetActive(true))
+            if (this._processWindowHandler.SetActive(true))
             {
-                gbxSetup.Enabled = false;
+                this.gbxSetup.Enabled = false;
                 return true;
             }
             MessageBox.Show("Password cannot be empty", "Empty password", MessageBoxButtons.OK,

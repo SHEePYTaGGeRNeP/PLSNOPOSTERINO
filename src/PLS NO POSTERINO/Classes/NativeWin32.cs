@@ -12,8 +12,8 @@ namespace PLS_NO_POSTERINO.Classes
             public string Title;
             public ProcessWindow(IntPtr p_hwnd, string p_title)
             {
-                hWnd = p_hwnd;
-                Title = p_title;
+                this.hWnd = p_hwnd;
+                this.Title = p_title;
             }
         }
 
