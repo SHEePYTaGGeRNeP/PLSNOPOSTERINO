@@ -172,5 +172,10 @@ namespace PLS_NO_POSTERINO
         {
             this._processWindowHandler.WaitForPassword = (int)this.numWaitForPassword.Value;
         }
+
+        private void chbxLock_CheckedChanged(object sender, EventArgs e)
+        {
+            this._processWindowHandler.LockPc = this.chbxLock.Checked;
+        }
     }
 }

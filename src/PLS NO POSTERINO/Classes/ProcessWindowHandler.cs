@@ -15,7 +15,7 @@ namespace PLS_NO_POSTERINO.Classes
         private ProgressBar trackWave = new ProgressBar() { Maximum = int.MaxValue };
 
         public int WaitForPassword { get; set; } = 5000;
-
+        public bool LockPc { get; set; }
         public static ProcessWindowHandler Instance;
 
         private readonly System.Media.SoundPlayer _soundPlayer = new System.Media.SoundPlayer(Properties.Resources.Loud_alarm_clock_sound);
@@ -41,7 +41,8 @@ namespace PLS_NO_POSTERINO.Classes
 
         [DllImport("user32.dll")]
         static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
-
+        [DllImport("user32")]
+        public static extern void LockWorkStation();
 
         public ProcessWindowHandler(MainWindowForm form)
         {
@@ -116,6 +117,9 @@ namespace PLS_NO_POSTERINO.Classes
         {
             Thread.Sleep(this.WaitForPassword);
             if (!this.IsActive) return;
+            if (this.LockPc)
+                LockWorkStation();
+            else
             if (this._bleepThread == null || !this._bleepThread.IsAlive)
                 this.StartBleepThread();
         }
@@ -143,7 +147,7 @@ namespace PLS_NO_POSTERINO.Classes
             }
             return true;
         }
-        
+
 
 
         public void SetAutoModusActive(bool pIsActive)
@@ -176,6 +180,7 @@ namespace PLS_NO_POSTERINO.Classes
             if (this._bleepThread != null && this._bleepThread.IsAlive)
                 this._bleepThread.Abort();
             this.SetVolumeMax();
+            if (!this.IsActive) return;
             this._bleepThread = new Thread(this.ThreadedStartBleeping);
             this._bleepThread.Start();
             this._soundPlayer.PlayLooping();

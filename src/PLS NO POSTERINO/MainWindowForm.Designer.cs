@@ -33,6 +33,8 @@
             this.tbxPasswordReal = new System.Windows.Forms.MaskedTextBox();
             this.tbxPassword = new System.Windows.Forms.MaskedTextBox();
             this.gbxSetup = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numWaitForPassword = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.numAFKRate = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -50,13 +52,12 @@
             this.btnPasswordOk = new System.Windows.Forms.Button();
             this.btnSetFormWindow = new System.Windows.Forms.Button();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.label4 = new System.Windows.Forms.Label();
-            this.numWaitForPassword = new System.Windows.Forms.NumericUpDown();
+            this.chbxLock = new System.Windows.Forms.CheckBox();
             this.gbxSetup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numWaitForPassword)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAFKRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numRefreshRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAutoModeSeconds)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numWaitForPassword)).BeginInit();
             this.SuspendLayout();
             // 
             // tbxPasswordReal
@@ -77,6 +78,7 @@
             // 
             // gbxSetup
             // 
+            this.gbxSetup.Controls.Add(this.chbxLock);
             this.gbxSetup.Controls.Add(this.label4);
             this.gbxSetup.Controls.Add(this.numWaitForPassword);
             this.gbxSetup.Controls.Add(this.label3);
@@ -101,6 +103,33 @@
             this.gbxSetup.TabIndex = 3;
             this.gbxSetup.TabStop = false;
             this.gbxSetup.Text = "Setup";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 219);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(92, 13);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Wait for password";
+            // 
+            // numWaitForPassword
+            // 
+            this.numWaitForPassword.Location = new System.Drawing.Point(110, 217);
+            this.numWaitForPassword.Maximum = new decimal(new int[] {
+            500000000,
+            0,
+            0,
+            0});
+            this.numWaitForPassword.Name = "numWaitForPassword";
+            this.numWaitForPassword.Size = new System.Drawing.Size(82, 20);
+            this.numWaitForPassword.TabIndex = 19;
+            this.numWaitForPassword.Value = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.numWaitForPassword.ValueChanged += new System.EventHandler(this.numWaitForPassword_ValueChanged);
             // 
             // label3
             // 
@@ -289,32 +318,16 @@
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
-            // label4
+            // chbxLock
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 219);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(92, 13);
-            this.label4.TabIndex = 20;
-            this.label4.Text = "Wait for password";
-            // 
-            // numWaitForPassword
-            // 
-            this.numWaitForPassword.Location = new System.Drawing.Point(110, 217);
-            this.numWaitForPassword.Maximum = new decimal(new int[] {
-            500000000,
-            0,
-            0,
-            0});
-            this.numWaitForPassword.Name = "numWaitForPassword";
-            this.numWaitForPassword.Size = new System.Drawing.Size(82, 20);
-            this.numWaitForPassword.TabIndex = 19;
-            this.numWaitForPassword.Value = new decimal(new int[] {
-            5000,
-            0,
-            0,
-            0});
-            this.numWaitForPassword.ValueChanged += new System.EventHandler(this.numWaitForPassword_ValueChanged);
+            this.chbxLock.AutoSize = true;
+            this.chbxLock.Location = new System.Drawing.Point(16, 190);
+            this.chbxLock.Name = "chbxLock";
+            this.chbxLock.Size = new System.Drawing.Size(67, 17);
+            this.chbxLock.TabIndex = 21;
+            this.chbxLock.Text = "Lock PC";
+            this.chbxLock.UseVisualStyleBackColor = true;
+            this.chbxLock.CheckedChanged += new System.EventHandler(this.chbxLock_CheckedChanged);
             // 
             // MainWindowForm
             // 
@@ -332,10 +345,10 @@
             this.Resize += new System.EventHandler(this.MainWindowForm_Resize);
             this.gbxSetup.ResumeLayout(false);
             this.gbxSetup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numWaitForPassword)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAFKRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numRefreshRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAutoModeSeconds)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numWaitForPassword)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -365,6 +378,7 @@
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown numWaitForPassword;
+        private System.Windows.Forms.CheckBox chbxLock;
     }
 }
 
